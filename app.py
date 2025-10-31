@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import scrolledtext
-from chat import get_response, bot_name
+from openAI import get_response_from_gpt
+
+from chat import get_response as get_intent_response, bot_name
 
 # === COLORS AND FONTS ===
 BG_COLOR = "#1e1e1e"      # Deep dark background
@@ -15,7 +17,7 @@ FONT_BOLD = ("Helvetica", 12, "bold")
 class ChatApplication:
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("ChatGPT Style Bot - Dilu")
+        self.window.title("ChatBot - Dileeban")
         self.window.configure(bg=BG_COLOR)
         self.window.geometry("600x700")
 
@@ -65,7 +67,7 @@ class ChatApplication:
         self.send_button.pack(side=tk.RIGHT, ipadx=10, ipady=5)
 
         # Add welcome text
-        self._insert_message(f"Hello! I’m {bot_name}. How can I help you today?", bot_name)
+        self._insert_message("Hello😊!. How can I help you today?", bot_name)
 
     def _on_enter_pressed(self, event):
         msg = self.msg_entry.get().strip()
@@ -79,11 +81,15 @@ class ChatApplication:
         if sender == "You":
             # USER MESSAGE
             self.chat_area.insert(tk.END, f"You: {msg}\n", "user")
-            response = get_response(msg)
+
+            # Try model-based response first
+            response = get_intent_response(msg)
+
+            # If your model couldn't understand (returns fallback)
+            if response in ["I do not understand...😰", "Sorry, I didn’t get that."]:
+                response = get_response_from_gpt(msg)
+
             self.chat_area.insert(tk.END, f"{bot_name}: {response}\n\n", "bot")
-        else:
-            # INITIAL BOT MESSAGE
-            self.chat_area.insert(tk.END, f"{sender}: {msg}\n\n", "bot")
 
         self.chat_area.configure(state=tk.DISABLED)
         self.chat_area.yview(tk.END)
