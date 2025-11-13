@@ -1,11 +1,12 @@
 import torch, json, random
 
 from model import ChatClassifier
-from nltk_utils import tokenize, bag_of_words
+from nltk_utils import tokenize, bag_of_words, resource_path
 
 bot_name = "dileeb😊"
 
-with open('intents.json', 'r') as f:
+json_path = resource_path("intents.json")
+with open(json_path, "r") as f:
     intents = json.load(f)
 
 save_path = "saved_model.pth"

@@ -86,7 +86,7 @@ class ChatApplication:
             response = get_intent_response(msg)
 
             # If your model couldn't understand (returns fallback)
-            if response in ["I do not understand...😰", "Sorry, I didn’t get that."]:
+            if response in ["I do not understand...😰"]:
                 response = get_response_from_gpt(msg)
 
             self.chat_area.insert(tk.END, f"{bot_name}: {response}\n\n", "bot")

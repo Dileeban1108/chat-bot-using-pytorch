@@ -2,6 +2,9 @@ import nltk
 from nltk.corpus import words
 import numpy as np
 # nltk.download('punkt_tab')
+
+import os, sys
+
 from nltk.stem.porter import  PorterStemmer
 stemmer = PorterStemmer()
 
@@ -43,4 +46,12 @@ def bag_of_words(tokenized_sentence, all_words):
 # print(bag_of_words(tokanized_sentence, all_words))
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
 
+    return os.path.join(base_path, relative_path)

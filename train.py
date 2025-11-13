@@ -2,7 +2,7 @@ import json
 import torch.nn as nn
 from torch.nn import CrossEntropyLoss
 
-from nltk_utils import tokenize, stem, bag_of_words
+from nltk_utils import tokenize, stem, bag_of_words, resource_path
 from nltk import interpret_sents
 import numpy as np
 
@@ -12,7 +12,8 @@ from torch.utils.data import Dataset, DataLoader
 from model import ChatClassifier
 
 # open the intents.json file
-with open('intents.json', 'r') as f:
+json_path = resource_path("intents.json")
+with open(json_path, "r") as f:
     intents = json.load(f)
 
 # print(intents)
