@@ -1,5 +1,4 @@
 import nltk
-from nltk.corpus import words
 import numpy as np
 # nltk.download('punkt_tab')
 

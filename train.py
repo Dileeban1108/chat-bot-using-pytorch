@@ -1,9 +1,7 @@
 import json
 import torch.nn as nn
-from torch.nn import CrossEntropyLoss
 
 from nltk_utils import tokenize, stem, bag_of_words, resource_path
-from nltk import interpret_sents
 import numpy as np
 
 import torch
