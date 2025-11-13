@@ -1,5 +1,5 @@
 fastapi~=0.121.1
-uvicorn~=0.26.1
+uvicorn~=0.23.2
 torch~=2.9.0
 numpy~=2.3.4
 nltk~=3.9.2
