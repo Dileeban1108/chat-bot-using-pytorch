@@ -15,6 +15,3 @@ async def chat(req: ChatRequest):
     if response in ["I do not understand...😰"]:
         response = get_response_from_gpt(msg)
     return {"bot_name": bot_name, "response": response}
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
