@@ -2,7 +2,7 @@ fastapi~=0.121.1
 torch~=2.9.1  # Changed to stable version
 numpy~=1.26.4 # Changed to stable version
 nltk~=3.9.2
-pydantic~=2.12.3
+pydantic~=1.10.13
 uvicorn[standard]
-pysimdjson~=6.0.2  # <-- ADD THIS LINE
+# pysimdjson~=6.0.2  # <-- ADD THIS LINE
 # Remove tinyllama, as it's not a PyPI package
