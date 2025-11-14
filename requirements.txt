@@ -4,5 +4,6 @@ numpy~=1.26.4 # Changed to stable version
 nltk~=3.9.2
 pydantic~=1.10.13
 uvicorn[standard]
+ollama
 # pysimdjson~=6.0.2  # <-- ADD THIS LINE
 # Remove tinyllama, as it's not a PyPI package
