@@ -1,9 +1,24 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 from chat import get_response as get_intent_response, bot_name
 from openAI import get_response_from_gpt
 
 app = FastAPI(title=f"ChatBot - {bot_name}")
+
+# --- CRITICAL CORS CONFIGURATION ---
+origins = [
+    "*", # Allows all origins for local testing. Restrict this in a production environment!
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"], # Allow GET, POST, etc.
+    allow_headers=["*"],
+)
+# --- END CORS CONFIGURATION ---
 
 # --- START: HEALTH CHECK ROUTE ---
 @app.get("/")
