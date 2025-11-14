@@ -4,3 +4,4 @@ numpy~=2.3.4
 nltk~=3.9.2
 pydantic~=2.12.3
 tinyllama~=0.0.2b0
+simdjson>=5.0.0
