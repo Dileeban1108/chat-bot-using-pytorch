@@ -1,5 +1,3 @@
-import os
-import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 from chat import get_response as get_intent_response, bot_name
@@ -19,5 +17,4 @@ async def chat(req: ChatRequest):
     return {"bot_name": bot_name, "response": response}
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run("server:app", host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", debug=True)
