@@ -1,5 +1,6 @@
 import torch, json, random
 
+# Ensure resource_path is imported
 from model import ChatClassifier
 from nltk_utils import tokenize, bag_of_words, resource_path
 
@@ -9,9 +10,13 @@ json_path = resource_path("intents.json")
 with open(json_path, "r") as f:
     intents = json.load(f)
 
-save_path = "saved_model.pth"
+# --- START: MODEL PATH FIX ---
+# Use resource_path for the model file for reliable loading on Render
+save_path = resource_path("saved_model.pth")
 
-data=torch.load(save_path)
+# IMPORTANT: Ensure 'saved_model.pth' is in your Git repository and pushed to Render!
+data=torch.load(save_path, map_location=torch.device('cpu')) # Add map_location for CPU deployment
+# --- END: MODEL PATH FIX ---
 
 model_state = data['model_state']
 input_size = data["input_size"]
@@ -44,5 +49,3 @@ def get_response(msg):
                 return random.choice(intent['responses'])
 
     return "I do not understand...😰"
-
-

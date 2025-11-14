@@ -5,6 +5,13 @@ from openAI import get_response_from_gpt
 
 app = FastAPI(title=f"ChatBot - {bot_name}")
 
+# --- START: HEALTH CHECK ROUTE ---
+@app.get("/")
+async def root():
+    """Simple GET route to confirm the service is live and running."""
+    return {"status": "ok", "message": f"{bot_name} Chatbot API is ready!"}
+# --- END: HEALTH CHECK ROUTE ---
+
 class ChatRequest(BaseModel):
     message: str
 

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Chatbot UI</title>
+    <style>
+        /* Basic chat-like styling */
+        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; display: flex; justify-content: center; }
+        #chat-container { width: 100%; max-width: 600px; height: 90vh; background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        #messages { flex-grow: 1; padding: 20px; overflow-y: auto; border-bottom: 1px solid #eee; }
+        .message { margin-bottom: 15px; padding: 10px 15px; border-radius: 18px; max-width: 80%; }
+        .user { background-color: #007bff; color: white; align-self: flex-end; margin-left: auto; }
+        .bot { background-color: #e5e5ea; color: black; align-self: flex-start; }
+        #input-form { display: flex; padding: 15px; background-color: #f9f9f9; }
+        #message-input { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px; margin-right: 10px; font-size: 16px; }
+        #send-button { padding: 10px 20px; border: none; background-color: #28a745; color: white; border-radius: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="messages">
+            <div class="message bot">Hello! Ask me anything.</div>
+        </div>
+        <form id="input-form">
+            <input type="text" id="message-input" placeholder="Type your message..." required>
+            <button type="submit" id="send-button">Send</button>
+        </form>
+    </div>
+
+    <script>
+        // *** ⚠️ REPLACE THIS WITH YOUR RENDER URL ⚠️ ***
+        const API_URL = 'https://chat-bot-using-pytorch-12.onrender.com/chat';
+
+        const messagesContainer = document.getElementById('messages');
+        const inputForm = document.getElementById('input-form');
+        const messageInput = document.getElementById('message-input');
+
+        // Function to add a message to the chat UI
+        function appendMessage(role, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.textContent = text;
+            messagesContainer.appendChild(messageDiv);
+
+            // Scroll to the bottom of the chat window
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Handle form submission
+        inputForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userMessage = messageInput.value.trim();
+            if (!userMessage) return;
+
+            // 1. Display user message immediately
+            appendMessage('user', userMessage);
+            messageInput.value = ''; // Clear input
+
+            // 2. Display a "typing" indicator
+            let typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot typing';
+            typingDiv.textContent = '...';
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            try {
+                // 3. Send message to FastAPI backend
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // 4. Remove typing indicator
+                typingDiv.remove();
+
+                // 5. Display bot response
+                appendMessage('bot', data.response);
+
+            } catch (error) {
+                console.error('Chatbot API Error:', error);
+                typingDiv.remove();
+                appendMessage('bot', 'Error: Could not connect to the server or get a valid response.');
+            }
+        });
+    </script>
+</body>
+</html>
